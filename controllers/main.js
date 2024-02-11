@@ -17,26 +17,14 @@ const login = async (req, res) => {
 };
 
 const dashboard = async (req, res) => {
-  const authHeader = req.headers.authorization;
+  const { username } = req.user;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new Unauthenticated("No token provided...");
-  }
+  const luckyNumber = Math.floor(Math.random() * 100);
 
-  const token = authHeader.split(" ")[1];
-  try {
-    const luckyNumber = Math.floor(Math.random() * 100);
-    const decode = jwt.verify(token, process.env.JWT_TKN);
-
-    res.status(StatusCodes.OK).json({
-      msg: `Hello ${decode.username}`,
-      secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
-    });
-  } catch (error) {
-    res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: `Not authorized to access the route...` });
-  }
+  res.status(StatusCodes.OK).json({
+    msg: `Hello ${username}`,
+    secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
+  });
 };
 
 module.exports = { login, dashboard };
