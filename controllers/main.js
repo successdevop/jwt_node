@@ -1,11 +1,11 @@
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
-const { Unauthenticated } = require("../errors");
+const { BadRequest } = require("../errors");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    throw new Unauthenticated("Please provide username and password");
+    throw new BadRequest("Please provide username and password");
   }
 
   const id = new Date().getTime();
